@@ -1,9 +1,13 @@
 const config = {
+  fps: 60,
   strokeWidth: 2,
   strokeColor: "#f0f",
 };
 
 const gameHTML = document.getElementById("gameBackground");
+const scoreHTML = document.getElementById("score");
+const healthHTML = document.getElementById("health");
+const fpsHTML = document.getElementById("fps");
 const ctx = gameHTML.getContext("2d");
 const dpi = window.devicePixelRatio;
 
@@ -85,11 +89,9 @@ const draw = {
 fix_dpi();
 
 // const charPrinter = (angle) => {
-//   draw.clearScreen();
 //   draw.drawChar(20, 50, angle, 6, 1, "##000");
 // };
 // const bulletPrinter = () => {
-//   draw.clearScreen();
 //   draw.drawRect(Math.random() * 500, Math.random() * 500, 10, 1, "#f00");
 // };
 
@@ -101,3 +103,30 @@ document.onkeypress = (e) => {
   e.key === " " ? bulletPrinter() : "";
   e.key === "p" || e.key === "P" ? console.log("pause") : "";
 };
+
+const fpsCalc = () => {
+  fpsHTML.innerHTML = config.fps;
+};
+
+const mainGame = () => {
+  draw.clearScreen();
+  // Robot
+  // bulletMng
+  // charMng
+  //gameMng
+  //draw All
+};
+
+// clock
+const clock = () => {
+  setInterval(() => {
+    const t = new Date().getTime();
+    mainGame();
+    const delay = new Date().getTime() - t;
+    fpsHTML.innerHTML = `FPS: ${(1000 / (delay + 1000 / config.fps)).toFixed(
+      2
+    )}`;
+  }, 1000 / config.fps);
+};
+
+clock();
