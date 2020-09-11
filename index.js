@@ -78,9 +78,26 @@ const draw = {
     }
   },
   clearScreen: () => {
-    console.log("sdhjvsd");
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   },
 };
 
 fix_dpi();
+
+// const charPrinter = (angle) => {
+//   draw.clearScreen();
+//   draw.drawChar(20, 50, angle, 6, 1, "##000");
+// };
+// const bulletPrinter = () => {
+//   draw.clearScreen();
+//   draw.drawRect(Math.random() * 500, Math.random() * 500, 10, 1, "#f00");
+// };
+
+document.onkeypress = (e) => {
+  e.key === "w" || e.key === "W" ? charPrinter(90) : "";
+  e.key === "s" || e.key === "S" ? charPrinter(270) : "";
+  e.key === "a" || e.key === "A" ? charPrinter(180) : "";
+  e.key === "d" || e.key === "D" ? charPrinter(0) : "";
+  e.key === " " ? bulletPrinter() : "";
+  e.key === "p" || e.key === "P" ? console.log("pause") : "";
+};
