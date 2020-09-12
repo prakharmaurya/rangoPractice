@@ -1,6 +1,6 @@
 const config = {
   margin: 15,
-  fps: 1,
+  fps: 60,
   strokeWidth: 2,
   strokeColor: "#f0f",
 };
@@ -127,7 +127,7 @@ document.onkeypress = (e) => {
   e.key === "s" || e.key === "S" ? charMover(0, 270) : "";
   e.key === "a" || e.key === "A" ? charMover(0, 180) : "";
   e.key === "d" || e.key === "D" ? charMover(0, 0) : "";
-  e.key === " " ? bulletCreate() : "";
+  e.key === " " ? bulletMaker(charState[0]) : "";
   e.key === "p" || e.key === "P" ? pause() : "";
 };
 
@@ -151,6 +151,22 @@ const charMover = (pos, angle) => {
   } else if (charState[pos].position.y >= ctx.canvas.height - config.margin) {
     charState[pos].position.y = ctx.canvas.height - config.margin;
   }
+};
+
+const bulletMaker = (char) => {
+  bulletState.push({
+    position: {
+      x: char.position.x,
+      y: char.position.y,
+      angle: char.position.angle,
+    },
+    bulletSize: char.bulletSize,
+    bulletColor: char.bulletColor,
+    bulletColorStyle: char.bulletColorStyle,
+    bulletSpeed: char.bulletSpeed,
+    bulletDamage: char.bulletDamage,
+    owner: char.characterId,
+  });
 };
 
 const bulletMover = () => {
@@ -221,6 +237,11 @@ const init = () => {
     charColorStyle: 1,
     characterId: 0,
     charSpeed: 10,
+    bulletSize: 6,
+    bulletColor: "#0a0",
+    bulletColorStyle: 1,
+    bulletSpeed: 10,
+    bulletDamage: 10,
   });
 
   // creating enemy
@@ -235,6 +256,11 @@ const init = () => {
     charColorStyle: 0,
     characterId: 1,
     charSpeed: 10,
+    bulletSize: 6,
+    bulletColor: "#000",
+    bulletColorStyle: 0,
+    bulletSpeed: 10,
+    bulletDamage: 10,
   });
 
   // creating enemy
@@ -249,20 +275,11 @@ const init = () => {
     charColorStyle: 0,
     characterId: 2,
     charSpeed: 10,
-  });
-
-  bulletState.push({
-    position: {
-      x: 50,
-      y: 100,
-      angle: 90,
-    },
     bulletSize: 6,
     bulletColor: "#000",
     bulletColorStyle: 0,
     bulletSpeed: 10,
     bulletDamage: 10,
-    owner: 0,
   });
 
   clock();
