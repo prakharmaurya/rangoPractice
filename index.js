@@ -1,5 +1,5 @@
 const config = {
-  fps: 1,
+  fps: 60,
   strokeWidth: 2,
   strokeColor: "#f0f",
 };
@@ -114,12 +114,23 @@ const charPrinter = () => {
 // };
 
 document.onkeypress = (e) => {
-  e.key === "w" || e.key === "W" ? charPrinter(90) : "";
-  e.key === "s" || e.key === "S" ? charPrinter(270) : "";
-  e.key === "a" || e.key === "A" ? charPrinter(180) : "";
-  e.key === "d" || e.key === "D" ? charPrinter(0) : "";
+  e.key === "w" || e.key === "W" ? charMover(0, 90) : "";
+  e.key === "s" || e.key === "S" ? charMover(0, 270) : "";
+  e.key === "a" || e.key === "A" ? charMover(0, 180) : "";
+  e.key === "d" || e.key === "D" ? charMover(0, 0) : "";
   e.key === " " ? bulletPrinter() : "";
   e.key === "p" || e.key === "P" ? pause() : "";
+};
+
+const charMover = (pos, angle) => {
+  charState[pos].position.angle = angle;
+
+  charState[pos].position.x =
+    charState[pos].position.x +
+    Math.cos((angle / 180) * Math.PI).toFixed(2) * charState[pos].charSpeed;
+  charState[pos].position.y =
+    charState[pos].position.y -
+    Math.sin((angle / 180) * Math.PI).toFixed(2) * charState[pos].charSpeed;
 };
 
 const pause = () => {
@@ -168,6 +179,7 @@ const init = () => {
     charColor: "#0ac",
     charColorStyle: 1,
     characterId: 0,
+    charSpeed: 10,
   });
 
   // creating enemy
@@ -181,6 +193,7 @@ const init = () => {
     charColor: "#000",
     charColorStyle: 0,
     characterId: 1,
+    charSpeed: 10,
   });
 
   // creating enemy
@@ -194,6 +207,7 @@ const init = () => {
     charColor: "#f00",
     charColorStyle: 0,
     characterId: 2,
+    charSpeed: 10,
   });
   clock();
 };
