@@ -1,13 +1,16 @@
 const config = {
-  fps: 60,
+  fps: 1,
   strokeWidth: 2,
   strokeColor: "#f0f",
 };
 
 const gameState = {
-  puased: false,
+  paused: false,
   clock: 0,
 };
+
+charState = [];
+// bulletState = [];
 
 const gameHTML = document.getElementById("gameBackground");
 const scoreHTML = document.getElementById("score");
@@ -93,9 +96,19 @@ const draw = {
 
 fix_dpi();
 
-// const charPrinter = (angle) => {
-//   draw.drawChar(20, 50, angle, 6, 1, "##000");
-// };
+const charPrinter = () => {
+  charState.forEach((e) => {
+    draw.drawChar(
+      e.position.x,
+      e.position.y,
+      e.position.angle,
+      e.charSize,
+      e.charColorStyle,
+      e.charColor
+    );
+  });
+};
+
 // const bulletPrinter = () => {
 //   draw.drawRect(Math.random() * 500, Math.random() * 500, 10, 1, "#f00");
 // };
@@ -110,14 +123,14 @@ document.onkeypress = (e) => {
 };
 
 const pause = () => {
-  if (!gameState.pause) {
-    console.log("Paused");
-    clearInterval(gameState.clock);
-    gameState.pause = true;
-  } else {
+  if (gameState.paused) {
     console.log("Resumed");
     clock();
-    gameState.pause = false;
+    gameState.paused = false;
+  } else {
+    console.log("Paused");
+    clearInterval(gameState.clock);
+    gameState.paused = true;
   }
 };
 
@@ -127,7 +140,8 @@ const mainGame = () => {
   // bulletMng
   // charMng
   //gameMng
-  //draw All
+  charPrinter();
+  //bulletPrinter();
 };
 
 // clock
@@ -142,4 +156,46 @@ const clock = () => {
   }, 1000 / config.fps);
 };
 
-clock();
+const init = () => {
+  // creating player
+  charState.push({
+    position: {
+      x: 20,
+      y: 50,
+      angle: 90,
+    },
+    charSize: 7,
+    charColor: "#0ac",
+    charColorStyle: 1,
+    characterId: 0,
+  });
+
+  // creating enemy
+  charState.push({
+    position: {
+      x: 60,
+      y: 200,
+      angle: 0,
+    },
+    charSize: 12,
+    charColor: "#000",
+    charColorStyle: 0,
+    characterId: 1,
+  });
+
+  // creating enemy
+  charState.push({
+    position: {
+      x: 60,
+      y: 300,
+      angle: 270,
+    },
+    charSize: 20,
+    charColor: "#f00",
+    charColorStyle: 0,
+    characterId: 2,
+  });
+  clock();
+};
+
+init();
