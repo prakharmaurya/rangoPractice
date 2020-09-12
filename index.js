@@ -4,6 +4,11 @@ const config = {
   strokeColor: "#f0f",
 };
 
+const gameState = {
+  puased: false,
+  clock: 0,
+};
+
 const gameHTML = document.getElementById("gameBackground");
 const scoreHTML = document.getElementById("score");
 const healthHTML = document.getElementById("health");
@@ -101,11 +106,19 @@ document.onkeypress = (e) => {
   e.key === "a" || e.key === "A" ? charPrinter(180) : "";
   e.key === "d" || e.key === "D" ? charPrinter(0) : "";
   e.key === " " ? bulletPrinter() : "";
-  e.key === "p" || e.key === "P" ? console.log("pause") : "";
+  e.key === "p" || e.key === "P" ? pause() : "";
 };
 
-const fpsCalc = () => {
-  fpsHTML.innerHTML = config.fps;
+const pause = () => {
+  if (!gameState.pause) {
+    console.log("Paused");
+    clearInterval(gameState.clock);
+    gameState.pause = true;
+  } else {
+    console.log("Resumed");
+    clock();
+    gameState.pause = false;
+  }
 };
 
 const mainGame = () => {
@@ -119,13 +132,13 @@ const mainGame = () => {
 
 // clock
 const clock = () => {
-  setInterval(() => {
+  gameState.clock = setInterval(() => {
     const t = new Date().getTime();
     mainGame();
-    const delay = new Date().getTime() - t;
-    fpsHTML.innerHTML = `FPS: ${(1000 / (delay + 1000 / config.fps)).toFixed(
-      2
-    )}`;
+    fpsHTML.innerHTML = `FPS: ${(
+      1000 /
+      (new Date().getTime() - t + 1000 / config.fps)
+    ).toFixed(2)}`;
   }, 1000 / config.fps);
 };
 
