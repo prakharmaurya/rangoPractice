@@ -1,6 +1,6 @@
 const config = {
   margin: 15,
-  fps: 60,
+  fps: 1,
   strokeWidth: 2,
   strokeColor: "#f0f",
 };
@@ -11,7 +11,7 @@ const gameState = {
 };
 
 charState = [];
-// bulletState = [];
+bulletState = [];
 
 const gameHTML = document.getElementById("gameBackground");
 const scoreHTML = document.getElementById("score");
@@ -110,16 +110,24 @@ const charPrinter = () => {
   });
 };
 
-// const bulletPrinter = () => {
-//   draw.drawRect(Math.random() * 500, Math.random() * 500, 10, 1, "#f00");
-// };
+const bulletPrinter = () => {
+  bulletState.forEach((e) => {
+    draw.drawRect(
+      e.position.x,
+      e.position.y,
+      e.bulletSize,
+      e.bulletColorStyle,
+      e.bulletColor
+    );
+  });
+};
 
 document.onkeypress = (e) => {
   e.key === "w" || e.key === "W" ? charMover(0, 90) : "";
   e.key === "s" || e.key === "S" ? charMover(0, 270) : "";
   e.key === "a" || e.key === "A" ? charMover(0, 180) : "";
   e.key === "d" || e.key === "D" ? charMover(0, 0) : "";
-  e.key === " " ? bulletPrinter() : "";
+  e.key === " " ? bulletCreate() : "";
   e.key === "p" || e.key === "P" ? pause() : "";
 };
 
@@ -145,6 +153,26 @@ const charMover = (pos, angle) => {
   }
 };
 
+const bulletMover = () => {
+  bulletState.forEach((e) => {
+    if (
+      e.position.x <= 0 ||
+      e.position.y <= 0 ||
+      e.position.y >= ctx.canvas.width ||
+      e.position.y >= ctx.canvas.height
+    ) {
+      bulletState.splice(bulletState.indexOf(e), 1);
+    }
+
+    e.position.x =
+      e.position.x +
+      Math.cos((e.position.angle / 180) * Math.PI).toFixed(2) * e.bulletSpeed;
+    e.position.y =
+      e.position.y -
+      Math.sin((e.position.angle / 180) * Math.PI).toFixed(2) * e.bulletSpeed;
+  });
+};
+
 const pause = () => {
   if (gameState.paused) {
     console.log("Resumed");
@@ -160,11 +188,12 @@ const pause = () => {
 const mainGame = () => {
   draw.clearScreen();
   // Robot
+  bulletMover();
   // bulletMng
   // charMng
   //gameMng
   charPrinter();
-  //bulletPrinter();
+  bulletPrinter();
 };
 
 // clock
@@ -221,6 +250,21 @@ const init = () => {
     characterId: 2,
     charSpeed: 10,
   });
+
+  bulletState.push({
+    position: {
+      x: 50,
+      y: 100,
+      angle: 90,
+    },
+    bulletSize: 6,
+    bulletColor: "#000",
+    bulletColorStyle: 0,
+    bulletSpeed: 10,
+    bulletDamage: 10,
+    owner: 0,
+  });
+
   clock();
 };
 
