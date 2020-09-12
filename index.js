@@ -1,4 +1,5 @@
 const config = {
+  margin: 15,
   fps: 60,
   strokeWidth: 2,
   strokeColor: "#f0f",
@@ -131,6 +132,17 @@ const charMover = (pos, angle) => {
   charState[pos].position.y =
     charState[pos].position.y -
     Math.sin((angle / 180) * Math.PI).toFixed(2) * charState[pos].charSpeed;
+
+  if (charState[pos].position.x <= config.margin) {
+    charState[pos].position.x = config.margin;
+  } else if (charState[pos].position.x >= ctx.canvas.width - config.margin) {
+    charState[pos].position.x = ctx.canvas.width - config.margin;
+  }
+  if (charState[pos].position.y <= config.margin) {
+    charState[pos].position.y = config.margin;
+  } else if (charState[pos].position.y >= ctx.canvas.height - config.margin) {
+    charState[pos].position.y = ctx.canvas.height - config.margin;
+  }
 };
 
 const pause = () => {
