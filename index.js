@@ -56,6 +56,7 @@ const gameState = {
   paused: false,
   clock: 0,
   gameOver: false,
+  score: 0,
 };
 
 charState = [];
@@ -252,6 +253,7 @@ const bulletManager = () => {
           bulletState.splice(bulletState.indexOf(e), 1);
           // readuce health
           charState[i].charHealth -= e.bulletDamage;
+          gameState.score++;
         }
       }
     } else {
@@ -377,6 +379,8 @@ const clock = () => {
       1000 /
       (new Date().getTime() - t + 1000 / config.fps)
     ).toFixed(2)}`;
+    healthHTML.innerHTML = `Health: ${charState[0].charHealth}`;
+    scoreHTML.innerHTML = `Score: ${gameState.score}`;
   }, 1000 / config.fps);
 };
 
@@ -386,6 +390,7 @@ const init = () => {
   gameState.paused = false;
   gameState.gameOver = false;
   gameState.clock = 0;
+  gameState.score = 0;
 
   charState.length = 0;
   bulletState.length = 0;
