@@ -32,6 +32,17 @@ const config = {
   bossBulletSpeed: 10,
   bossBulletDamage: 10,
 
+  randomScale: 10,
+
+  enemyMovingFrequency: 5,
+  bossMovingFrequency: 5,
+  enemyFiringFrequency: 5,
+  bossFiringFrequency: 5,
+
+  enemySpwanFrequency: 5,
+  bossSpwanFrequency: 5,
+  totalEnemyAtaTime: 6,
+
   margin: 15,
   fps: 60,
   strokeWidth: 2,
@@ -293,8 +304,20 @@ const pause = () => {
   }
 };
 
+const robotManager = () => {
+  // Spwan
+  if (charState.length < config.totalEnemyAtaTime + 1) {
+    if (Math.random() * config.randomScale < config.enemySpwanFrequency) {
+      spawanEnemy();
+    }
+    if (Math.random() * config.randomScale < config.bossSpwanFrequency) {
+      spawanBoss();
+    }
+  }
+};
+
 const mainGame = () => {
-  // Robot
+  robotManager();
   bulletMover();
   bulletManager();
   charManager();
@@ -328,12 +351,6 @@ const init = () => {
 
   // creating player
   spawanPlayer();
-
-  // creating enemy
-  spawanEnemy();
-
-  // creating boss
-  spawanBoss();
 
   clock();
 };
