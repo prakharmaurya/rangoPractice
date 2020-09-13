@@ -1,8 +1,41 @@
 const config = {
+  playerSize: 8,
+  playerColor: "#9d65c9",
+  playerColorStyle: 2,
+  playerSpeed: 10,
+  playerHealth: 20,
+  playerBulletSize: 6,
+  playerBulletColor: "#5d54a4",
+  playerBulletColorStyle: 0,
+  playerBulletSpeed: 10,
+  playerBulletDamage: 2,
+
+  enemySize: 8,
+  enemyColor: "#f0a500",
+  enemyColorStyle: 0,
+  enemySpeed: 10,
+  enemyHealth: 4,
+  enemyBulletSize: 6,
+  enemyBulletColor: "#cf7500",
+  enemyBulletColorStyle: 0,
+  enemyBulletSpeed: 10,
+  enemyBulletDamage: 10,
+
+  bossSize: 12,
+  bossColor: "#d57149",
+  bossColorStyle: 0,
+  bossSpeed: 10,
+  bossHealth: 50,
+  bossBulletSize: 6,
+  bossBulletColor: "#aa4a30",
+  bossBulletColorStyle: 0,
+  bossBulletSpeed: 10,
+  bossBulletDamage: 10,
+
   margin: 15,
   fps: 60,
   strokeWidth: 2,
-  strokeColor: "#f0f",
+  strokeColor: "#000",
 };
 
 const gameState = {
@@ -294,66 +327,78 @@ const init = () => {
   bulletState.length = 0;
 
   // creating player
-  charState.push({
-    position: {
-      x: 20,
-      y: 50,
-      angle: 90,
-    },
-    charSize: 7,
-    charColor: "#0ac",
-    charColorStyle: 1,
-    characterId: 0,
-    charSpeed: 10,
-    charHealth: 10,
-    bulletSize: 6,
-    bulletColor: "#0a0",
-    bulletColorStyle: 1,
-    bulletSpeed: 10,
-    bulletDamage: 10,
-  });
+  spawanPlayer();
 
   // creating enemy
-  charState.push({
-    position: {
-      x: 60,
-      y: 200,
-      angle: 0,
-    },
-    charSize: 12,
-    charColor: "#000",
-    charColorStyle: 0,
-    characterId: 1,
-    charSpeed: 10,
-    charHealth: 50,
-    bulletSize: 6,
-    bulletColor: "#000",
-    bulletColorStyle: 0,
-    bulletSpeed: 10,
-    bulletDamage: 10,
-  });
+  spawanEnemy();
 
-  // creating enemy
-  charState.push({
-    position: {
-      x: 60,
-      y: 300,
-      angle: 270,
-    },
-    charSize: 20,
-    charColor: "#f00",
-    charColorStyle: 0,
-    characterId: 2,
-    charSpeed: 10,
-    charHealth: 100,
-    bulletSize: 6,
-    bulletColor: "#000",
-    bulletColorStyle: 0,
-    bulletSpeed: 10,
-    bulletDamage: 10,
-  });
+  // creating boss
+  spawanBoss();
 
   clock();
+};
+
+const spawanPlayer = () => {
+  charState.push({
+    position: {
+      x: ctx.canvas.width / 2,
+      y: ctx.canvas.height / 2,
+      angle: 90,
+    },
+    charSize: config.playerSize,
+    charColor: config.playerColor,
+    charColorStyle: config.playerColorStyle,
+    characterId: 0,
+    charSpeed: config.playerSpeed,
+    charHealth: config.playerHealth,
+    bulletSize: config.playerBulletSize,
+    bulletColor: config.playerBulletColor,
+    bulletColorStyle: config.playerBulletColorStyle,
+    bulletSpeed: config.playerBulletSpeed,
+    bulletDamage: config.playerBulletDamage,
+  });
+};
+
+const spawanEnemy = () => {
+  charState.push({
+    position: {
+      x: Math.random() * ctx.canvas.width,
+      y: Math.random() * ctx.canvas.height,
+      angle: 90,
+    },
+    charSize: config.enemySize,
+    charColor: config.enemyColor,
+    charColorStyle: config.enemyColorStyle,
+    characterId: 1,
+    charSpeed: config.enemySpeed,
+    charHealth: config.enemyHealth,
+    bulletSize: config.enemyBulletSize,
+    bulletColor: config.enemyBulletColor,
+    bulletColorStyle: config.enemyBulletColorStyle,
+    bulletSpeed: config.enemyBulletSpeed,
+    bulletDamage: config.enemyBulletDamage,
+  });
+};
+
+const spawanBoss = () => {
+  charState.push({
+    position: {
+      x: Math.random() * ctx.canvas.width,
+      y: Math.random() * ctx.canvas.height,
+      angle: 90,
+    },
+    charSize: config.bossSize,
+    charColor: config.bossColor,
+    charColorStyle: config.bossColorStyle,
+    characterId: 2,
+    charSpeed: config.bossSpeed,
+    charHealth: config.bossHealth,
+    bulletSize: config.bossBulletSize,
+    bulletColor: config.bossBulletColor,
+    bulletColorStyle: config.bossBulletColorStyle,
+    bulletSpeed: config.bossBulletSpeed,
+    bulletDamage: config.bossBulletDamage,
+  });
 };
 
 init();
