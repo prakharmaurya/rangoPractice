@@ -236,6 +236,18 @@ const charManager = () => {
   }
 };
 
+const gameManager = () => {
+  if (gameState.gameOver && !gameState.paused) {
+    pause();
+    gameState.paused = true;
+    console.log("Game Over");
+    if (confirm("Want to play again?")) {
+      // restart
+      init();
+    }
+  }
+};
+
 const pause = () => {
   if (gameState.paused) {
     console.log("Resumed");
@@ -253,7 +265,7 @@ const mainGame = () => {
   bulletMover();
   bulletManager();
   charManager();
-  //gameMng
+  gameManager();
   draw.clearScreen();
   charPrinter();
   bulletPrinter();
@@ -272,6 +284,15 @@ const clock = () => {
 };
 
 const init = () => {
+  // claer variables
+  clearInterval(gameState.clock);
+  gameState.paused = false;
+  gameState.gameOver = false;
+  gameState.clock = 0;
+
+  charState.length = 0;
+  bulletState.length = 0;
+
   // creating player
   charState.push({
     position: {
