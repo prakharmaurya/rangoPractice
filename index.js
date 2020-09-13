@@ -8,6 +8,7 @@ const config = {
 const gameState = {
   paused: false,
   clock: 0,
+  gameOver: false,
 };
 
 charState = [];
@@ -223,9 +224,17 @@ const bulletManager = () => {
   });
 };
 
-// const charManager = () => {
+const charManager = () => {
+  for (let i = 1; i < charState.length; i++) {
+    if (charState[i].charHealth <= 0) {
+      charState.splice(charState.indexOf(charState[i]), 1);
+    }
+  }
 
-// };
+  if (charState[0].charHealth <= 0) {
+    gameState.gameOver = true;
+  }
+};
 
 const pause = () => {
   if (gameState.paused) {
@@ -243,7 +252,7 @@ const mainGame = () => {
   // Robot
   bulletMover();
   bulletManager();
-  // charManager();
+  charManager();
   //gameMng
   draw.clearScreen();
   charPrinter();
