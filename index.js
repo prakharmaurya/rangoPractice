@@ -1,4 +1,5 @@
 const config = {
+  playerCharacterId: 0,
   playerSize: 8,
   playerColor: "#9d65c9",
   playerColorStyle: 2,
@@ -8,35 +9,38 @@ const config = {
   playerBulletColor: "#5d54a4",
   playerBulletColorStyle: 0,
   playerBulletSpeed: 10,
-  playerBulletDamage: 2,
+  playerBulletDamage: 1,
 
+  enemyCharacterId: 1,
   enemySize: 8,
   enemyColor: "#f0a500",
   enemyColorStyle: 0,
   enemySpeed: 10,
-  enemyHealth: 4,
+  enemyHealth: 2,
   enemyBulletSize: 6,
   enemyBulletColor: "#cf7500",
   enemyBulletColorStyle: 0,
   enemyBulletSpeed: 10,
-  enemyBulletDamage: 10,
+  enemyBulletDamage: 1,
 
+  bossCharacterId: 2,
   bossSize: 12,
   bossColor: "#d57149",
   bossColorStyle: 0,
   bossSpeed: 10,
-  bossHealth: 50,
+  bossHealth: 7,
   bossBulletSize: 6,
   bossBulletColor: "#aa4a30",
   bossBulletColorStyle: 0,
   bossBulletSpeed: 10,
-  bossBulletDamage: 10,
+  bossBulletDamage: 2,
 
   randomScale: 100,
 
-  robotMovingFrequency: 2,
-  enemyFiringFrequency: 15,
-  bossFiringFrequency: 15,
+  enemyMovingFrequency: 2,
+  bossMovingFrequency: 5,
+  enemyFiringFrequency: 5,
+  bossFiringFrequency: 5,
 
   enemySpwanFrequency: 15,
   bossSpwanFrequency: 15,
@@ -316,12 +320,39 @@ const robotManager = () => {
   const angle = [0, 90, 180, 270];
   // move
   for (let i = 1; i < charState.length; i++) {
-    if (Math.random() * config.randomScale < config.robotMovingFrequency) {
-      console.log(Math.abs(Math.ceil(Math.random() * angle.length - 1)));
+    if (
+      charState[i].characterId == config.enemyCharacterId &&
+      Math.random() * config.randomScale < config.enemyMovingFrequency
+    ) {
       charMover(
         i,
         angle[Math.abs(Math.ceil(Math.random() * angle.length - 1))]
       );
+    }
+    if (
+      charState[i].characterId == config.bossCharacterId &&
+      Math.random() * config.randomScale < config.bossMovingFrequency
+    ) {
+      charMover(
+        i,
+        angle[Math.abs(Math.ceil(Math.random() * angle.length - 1))]
+      );
+    }
+  }
+
+  // firing
+  for (let i = 1; i < charState.length; i++) {
+    if (
+      charState[i].characterId == config.enemyCharacterId &&
+      Math.random() * config.randomScale < config.enemyFiringFrequency
+    ) {
+      bulletMaker(charState[i]);
+    }
+    if (
+      charState[i].characterId == config.bossCharacterId &&
+      Math.random() * config.randomScale < config.bossFiringFrequency
+    ) {
+      bulletMaker(charState[i]);
     }
   }
 };
@@ -375,7 +406,7 @@ const spawanPlayer = () => {
     charSize: config.playerSize,
     charColor: config.playerColor,
     charColorStyle: config.playerColorStyle,
-    characterId: 0,
+    characterId: config.playerCharacterId,
     charSpeed: config.playerSpeed,
     charHealth: config.playerHealth,
     bulletSize: config.playerBulletSize,
@@ -396,7 +427,7 @@ const spawanEnemy = () => {
     charSize: config.enemySize,
     charColor: config.enemyColor,
     charColorStyle: config.enemyColorStyle,
-    characterId: 1,
+    characterId: config.enemyCharacterId,
     charSpeed: config.enemySpeed,
     charHealth: config.enemyHealth,
     bulletSize: config.enemyBulletSize,
@@ -417,7 +448,7 @@ const spawanBoss = () => {
     charSize: config.bossSize,
     charColor: config.bossColor,
     charColorStyle: config.bossColorStyle,
-    characterId: 2,
+    characterId: config.bossCharacterId,
     charSpeed: config.bossSpeed,
     charHealth: config.bossHealth,
     bulletSize: config.bossBulletSize,
