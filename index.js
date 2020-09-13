@@ -32,15 +32,14 @@ const config = {
   bossBulletSpeed: 10,
   bossBulletDamage: 10,
 
-  randomScale: 10,
+  randomScale: 100,
 
-  enemyMovingFrequency: 5,
-  bossMovingFrequency: 5,
-  enemyFiringFrequency: 5,
-  bossFiringFrequency: 5,
+  robotMovingFrequency: 2,
+  enemyFiringFrequency: 15,
+  bossFiringFrequency: 15,
 
-  enemySpwanFrequency: 5,
-  bossSpwanFrequency: 5,
+  enemySpwanFrequency: 15,
+  bossSpwanFrequency: 15,
   totalEnemyAtaTime: 6,
 
   margin: 15,
@@ -312,6 +311,17 @@ const robotManager = () => {
     }
     if (Math.random() * config.randomScale < config.bossSpwanFrequency) {
       spawanBoss();
+    }
+  }
+  const angle = [0, 90, 180, 270];
+  // move
+  for (let i = 1; i < charState.length; i++) {
+    if (Math.random() * config.randomScale < config.robotMovingFrequency) {
+      console.log(Math.abs(Math.ceil(Math.random() * angle.length - 1)));
+      charMover(
+        i,
+        angle[Math.abs(Math.ceil(Math.random() * angle.length - 1))]
+      );
     }
   }
 };
