@@ -189,6 +189,44 @@ const bulletMover = () => {
   });
 };
 
+const bulletManager = () => {
+  bulletState.forEach((e) => {
+    if (e.owner === 0) {
+      // this is bullet of player
+      for (let i = 1; i < charState.length; i++) {
+        if (
+          Math.abs(charState[i].position.x - e.position.x) <
+            (charState[i].charSize / 2 + e.bulletSize / 2) * 2 &&
+          Math.abs(charState[i].position.y - e.position.y) <
+            (charState[i].charSize / 2 + e.bulletSize / 2) * 2
+        ) {
+          // remove bullet
+          bulletState.splice(bulletState.indexOf(e), 1);
+          // readuce health
+          charState[i].charHealth -= e.bulletDamage;
+        }
+      }
+    } else {
+      // this is bullet of enemy
+      if (
+        Math.abs(charState[0].position.x - e.position.x) <
+          (charState[0].charSize / 2 + e.bulletSize / 2) * 2 &&
+        Math.abs(charState[0].position.y - e.position.y) <
+          (charState[0].charSize / 2 + e.bulletSize / 2) * 2
+      ) {
+        // remove bullet
+        bulletState.splice(bulletState.indexOf(e), 1);
+        // readuce health
+        charState[0].charHealth -= e.bulletDamage;
+      }
+    }
+  });
+};
+
+// const charManager = () => {
+
+// };
+
 const pause = () => {
   if (gameState.paused) {
     console.log("Resumed");
@@ -202,12 +240,12 @@ const pause = () => {
 };
 
 const mainGame = () => {
-  draw.clearScreen();
   // Robot
   bulletMover();
-  // bulletMng
-  // charMng
+  bulletManager();
+  // charManager();
   //gameMng
+  draw.clearScreen();
   charPrinter();
   bulletPrinter();
 };
@@ -237,6 +275,7 @@ const init = () => {
     charColorStyle: 1,
     characterId: 0,
     charSpeed: 10,
+    charHealth: 10,
     bulletSize: 6,
     bulletColor: "#0a0",
     bulletColorStyle: 1,
@@ -256,6 +295,7 @@ const init = () => {
     charColorStyle: 0,
     characterId: 1,
     charSpeed: 10,
+    charHealth: 50,
     bulletSize: 6,
     bulletColor: "#000",
     bulletColorStyle: 0,
@@ -275,6 +315,7 @@ const init = () => {
     charColorStyle: 0,
     characterId: 2,
     charSpeed: 10,
+    charHealth: 100,
     bulletSize: 6,
     bulletColor: "#000",
     bulletColorStyle: 0,
